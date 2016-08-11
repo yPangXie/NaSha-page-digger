@@ -9,23 +9,30 @@ chrome.tabs && chrome.tabs.query({
     currentWindow: true,
     // 选中的tab
     active: true
-}, function (foundTabs) {
+}, foundTabs => {
     if (foundTabs.length == 0) return false;
     chrome.tabs.executeScript(null, {
         file: "js/content_script.js"
-    }, function(data) {
-        fetch("http://bigyoo.me/ns/cmd", {
+    }, data => {
+        fetch("http://bigyoo.me:8000/ns/cmd", {
             method: "POST",
             headers: {"Content-Type": "application/x-www-form-urlencoded"},
-            body: `type=read&action=store&page=${data && data[0] || {}}`
-        }).then(function(res) {
+            body: `type=read&action=store&page=${JSON.stringify(data && data[0] || {})}`
+        }).then(res => {
             return res.json();
-        }).then(function(data) {
-            $('[data-role="loading"]').hide();
-            data.success ? $('[data-role="success"]').show() : $('[data-role="failed"]').html(data.message).show();
-        }).catch(function(err) {
-            $('[data-role="loading"]').hide();
-            $('[data-role="failed"]').show();
+        }).then(data => {
+            document.querySelectorAll('[data-role="loading"]')[0].style.display = 'none';
+
+            if(data.success) {
+                document.querySelectorAll('[data-role="success"]')[0].style.display = 'block';
+            } else {
+                var failedEleme = document.querySelectorAll('[data-role="failed"]')[0];
+                failedEleme.innerHTML = data.message;
+                failedEleme.style.display = 'block';
+            }
+        }).catch(err => {
+            document.querySelectorAll('[data-role="loading"]')[0].style.display = 'none';
+            document.querySelectorAll('[data-role="failed"]')[0].style.display = 'block';
         });
     });
 });
