@@ -3,17 +3,17 @@
     "name": "Page digger",
     "short_name": "Page digger",
     "author": "Mr.Krabs",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "爬去页面中的必要信息, 然后发送给服务端",
     "homepage_url": "http://bigyoo.me",
     "browser_action": {
         "default_title": "挖掘机",
-        "default_icon": "image/logo_128.png",
+        "default_icon": "image/nasha.png",
         "default_popup": "page-digger.html"
     },
     "icons": {
-        "48": "image/logo_128.png",
-        "128": "image/logo_128.png"
+        "48": "image/nasha.png",
+        "128": "image/nasha.png"
     },
     "content_scripts": [{
         "matches": ["http://*/*"],
