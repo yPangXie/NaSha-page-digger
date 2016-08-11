@@ -8,6 +8,10 @@
     var keywordsMeta = document.querySelectorAll('meta[name="keywords"]')[0];
     var titleElem = document.querySelectorAll('title')[0];
     var favicon = faviconLink ? faviconLink.getAttribute('href') : (faviconMeta ? faviconMeta.getAttribute('content') : '');
+    var url = window.location.href || '';
+
+    /* 仅记录三种类型的页面数据. 其他的都无视. */
+    if(!/^(https|http)/g.test(url)) return false;
 
     return {
         favicon: favicon,

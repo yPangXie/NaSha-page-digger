@@ -13,11 +13,19 @@ chrome.tabs && chrome.tabs.query({
     if (foundTabs.length == 0) return false;
     chrome.tabs.executeScript(null, {
         file: "js/content_script.js"
-    }, data => {
+    }, contentRes => {
+        var pageData = contentRes ? contentRes[0] : {};
+        if(!pageData || !pageData.url) {
+            document.querySelectorAll('[data-role="loading"]')[0].style.display = 'none';
+            document.querySelectorAll('[data-role="failed"]')[0].style.display = 'block';
+
+            return false;
+        }
+
         fetch("http://bigyoo.me/ns/cmd", {
             method: "POST",
             headers: {"Content-Type": "application/x-www-form-urlencoded"},
-            body: `type=read&action=store&page=${JSON.stringify(data && data[0] || {})}`
+            body: `type=read&action=store&page=${JSON.stringify(pageData)}`
         }).then(res => {
             return res.json();
         }).then(data => {
