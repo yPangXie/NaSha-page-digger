@@ -1,0 +1,27 @@
+{
+    "manifest_version": 2,
+    "name": "Page digger",
+    "short_name": "Page digger",
+    "author": "Mr.Krabs",
+    "version": "1.0.0",
+    "description": "爬去页面中的必要信息, 然后发送给服务端",
+    "homepage_url": "http://bigyoo.me",
+    "browser_action": {
+        "default_title": "挖掘机",
+        "default_icon": "image/logo_128.png",
+        "default_popup": "page-digger.html"
+    },
+    "icons": {
+        "48": "image/logo_128.png",
+        "128": "image/logo_128.png"
+    },
+    "content_scripts": [{
+        "matches": ["http://*/*"],
+        "js": ["js/page-digger.js", "js/jquery.min.js"]
+    }],
+    "permissions": [
+        "http://*/*",
+        "https://*/*"
+    ],
+    "content_security_policy": "script-src 'self'; object-src 'self'"
+}
