@@ -14,20 +14,18 @@ chrome.tabs && chrome.tabs.query({
     chrome.tabs.executeScript(null, {
         file: "js/content_script.js"
     }, function(data) {
-        $.ajax({
-            "method": "POST",
-            "url": "http://bigyoo.me/ns/cmd",
-            "data": {
-                "type": "read",
-                "action": "store",
-                "page": data && data[0] || {}
-            }
-        }).done(function (res) {
-            res.success ? $('[data-role="success"]').show() : $('[data-role="failed"]').html(res.message).show();
-        }).fail(function(err) {
-            $('[data-role="failed"]').show()
-        }).always(function() {
+        fetch("http://bigyoo.me/ns/cmd", {
+            method: "POST",
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: `type=read&action=store&page=${data && data[0] || {}}`
+        }).then(function(res) {
+            return res.json();
+        }).then(function(data) {
+            console.log(data);
             $('[data-role="loading"]').hide();
+            data.success ? $('[data-role="success"]').show() : $('[data-role="failed"]').html(data.message).show();
+        }).catch(function(err) {
+            $('[data-role="failed"]').show();
         });
     });
 });

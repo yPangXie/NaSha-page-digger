@@ -17,7 +17,7 @@
     },
     "content_scripts": [{
         "matches": ["http://*/*"],
-        "js": ["js/page-digger.js", "js/jquery.min.js"]
+        "js": ["js/page-digger.js"]
     }],
     "permissions": [
         "http://*/*",
