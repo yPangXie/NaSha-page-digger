@@ -14,7 +14,7 @@ chrome.tabs && chrome.tabs.query({
     chrome.tabs.executeScript(null, {
         file: "js/content_script.js"
     }, data => {
-        fetch("http://bigyoo.me:8000/ns/cmd", {
+        fetch("http://bigyoo.me/ns/cmd", {
             method: "POST",
             headers: {"Content-Type": "application/x-www-form-urlencoded"},
             body: `type=read&action=store&page=${JSON.stringify(data && data[0] || {})}`
