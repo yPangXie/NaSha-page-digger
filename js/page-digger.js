@@ -21,10 +21,10 @@ chrome.tabs && chrome.tabs.query({
         }).then(function(res) {
             return res.json();
         }).then(function(data) {
-            console.log(data);
             $('[data-role="loading"]').hide();
             data.success ? $('[data-role="success"]').show() : $('[data-role="failed"]').html(data.message).show();
         }).catch(function(err) {
+            $('[data-role="loading"]').hide();
             $('[data-role="failed"]').show();
         });
     });
