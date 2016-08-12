@@ -25,7 +25,7 @@ chrome.tabs && chrome.tabs.query({
         fetch("http://bigyoo.me/ns/cmd", {
             method: "POST",
             headers: {"Content-Type": "application/x-www-form-urlencoded"},
-            body: `type=read&action=store&page=${JSON.stringify(pageData)}`
+            body: `type=read&action=store&page=${encodeURIComponent(JSON.stringify(pageData))}`
         }).then(res => {
             return res.json();
         }).then(data => {
