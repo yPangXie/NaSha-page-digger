@@ -15,7 +15,7 @@
 
     return {
         favicon: favicon,
-        url: window.location.href,
+        url: url,
         title: titleElem ? titleElem.innerHTML : '',
         description: descriptionMeta ? descriptionMeta.getAttribute('content') : '',
         keywords: keywordsMeta ? keywordsMeta.getAttribute('content') : ''
