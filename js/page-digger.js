@@ -3,6 +3,8 @@
 // found in the LICENSE file.
 "use strict";
 
+const REQUEST_URL = 'http://bigyoo.me/ns/cmd';
+
 /* 获取当前tab信息 */
 chrome.tabs && chrome.tabs.query({
     // 当前焦点所在的页面
@@ -14,33 +16,33 @@ chrome.tabs && chrome.tabs.query({
     chrome.tabs.executeScript(null, {
         file: "js/content_script.js"
     }, contentRes => {
-        var pageData = contentRes ? contentRes[0] : {};
+        let pageData = contentRes ? contentRes[0] : {};
         if(!pageData || !pageData.url) {
-            document.querySelectorAll('[data-role="loading"]')[0].style.display = 'none';
-            document.querySelectorAll('[data-role="failed"]')[0].style.display = 'block';
+            document.querySelector('[data-role="loading"]').style.display = 'none';
+            document.querySelector('[data-role="failed"]').style.display = 'block';
 
             return false;
         }
 
-        fetch("http://bigyoo.me/ns/cmd", {
+        fetch(REQUEST_URL, {
             method: "POST",
             headers: {"Content-Type": "application/x-www-form-urlencoded"},
             body: `type=read&action=store&page=${encodeURIComponent(JSON.stringify(pageData))}`
         }).then(res => {
             return res.json();
         }).then(data => {
-            document.querySelectorAll('[data-role="loading"]')[0].style.display = 'none';
+            document.querySelector('[data-role="loading"]').style.display = 'none';
 
             if(data.success) {
-                document.querySelectorAll('[data-role="success"]')[0].style.display = 'block';
+                document.querySelector('[data-role="success"]').style.display = 'block';
             } else {
-                var failedEleme = document.querySelectorAll('[data-role="failed"]')[0];
+                let failedEleme = document.querySelector('[data-role="failed"]');
                 failedEleme.innerHTML = data.message;
                 failedEleme.style.display = 'block';
             }
         }).catch(err => {
-            document.querySelectorAll('[data-role="loading"]')[0].style.display = 'none';
-            document.querySelectorAll('[data-role="failed"]')[0].style.display = 'block';
+            document.querySelector('[data-role="loading"]').style.display = 'none';
+            document.querySelector('[data-role="failed"]').style.display = 'block';
         });
     });
 });
