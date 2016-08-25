@@ -3,9 +3,9 @@
     "name": "Page digger",
     "short_name": "Page digger",
     "author": "Mr.Krabs",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "爬去页面中的必要信息, 然后发送给服务端",
-    "homepage_url": "http://bigyoo.me",
+    "homepage_url": "http://ns.bigyoo.me",
     "browser_action": {
         "default_title": "挖掘机",
         "default_icon": "image/nasha.png",

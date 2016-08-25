@@ -4,9 +4,11 @@
 (function() {
     let faviconLink = document.querySelector('link[rel="shortcut icon"]')
                     || document.querySelector('link[rel="short icon"]')
-                    || document.querySelector('link[rel="apple-touch-icon"]');
+                    || document.querySelector('link[rel="apple-touch-icon"]')
+                    || document.querySelector('link[rel="apple-touch-icon image_src"]');
     let faviconMeta = document.querySelector('meta[itemprop="image"]');
-    let descriptionMeta = document.querySelector('meta[name="description"]');
+    let descriptionMeta = document.querySelector('meta[name="description"]')
+                    || document.querySelector('meta[name="twitter:description"]');
     let keywordsMeta = document.querySelector('meta[name="keywords"]');
     let titleElem = document.querySelector('title');
     let favicon = faviconLink ? faviconLink.getAttribute('href') : (faviconMeta ? faviconMeta.getAttribute('content') : '');
