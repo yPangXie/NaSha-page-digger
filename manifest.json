@@ -3,7 +3,7 @@
     "name": "Page digger",
     "short_name": "Page digger",
     "author": "Mr.Krabs",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "爬去页面中的必要信息, 然后发送给服务端",
     "homepage_url": "http://ns.bigyoo.me/read",
     "browser_action": {
