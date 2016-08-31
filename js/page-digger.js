@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 "use strict";
 
-const REQUEST_URL = 'http://bigyoo.me/ns/cmd';
+const REQUEST_URL = 'http://ns.bigyoo.me/cmd';
 
 /* 获取当前tab信息 */
 chrome.tabs && chrome.tabs.query({
