@@ -3,9 +3,10 @@
     "name": "Page digger",
     "short_name": "Page digger",
     "author": "Mr.Krabs",
-    "version": "1.1.1",
+    "version": "2.0.0",
     "description": "爬去页面中的必要信息, 然后发送给服务端",
     "homepage_url": "http://ns.bigyoo.me/read",
+    "options_page": "options.html",
     "browser_action": {
         "default_title": "挖掘机",
         "default_icon": "image/nasha.png",
@@ -17,9 +18,10 @@
     },
     "content_scripts": [{
         "matches": ["http://*/*"],
-        "js": ["js/page-digger.js"]
+        "js": ["js/page-digger.js", "js/options.js"]
     }],
     "permissions": [
+        "storage",
         "http://*/*",
         "https://*/*"
     ],

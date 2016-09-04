@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>配置页面</title>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+        <style type="text/css">
+        #page-digger-settings {width: 300px; margin: 50px auto;}
+        .description-content {color: #CCC; font-size: 13px;}
+        </style>
+    </head>
+
+    <body id="page-digger-settings">
+        <h3>域名黑名单列表</h3>
+        <p class="description-content">NaSha read list抓取数据, 配置黑名单列表, 即ignore列表. 每行一条数据, 填写域名信息</p>
+        <div class="form-group">
+            <textarea class="form-control" data-role="black-list" rows="7"></textarea>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" data-role="save-black-list">保存</button>
+            <button class="btn btn-warning" data-role="clean-black-list">清空数据</button>
+        </div>
+        <script type="text/javascript" src="js/options.js"></script>
+    </body>
+</html>

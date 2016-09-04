@@ -16,33 +16,39 @@ chrome.tabs && chrome.tabs.query({
     chrome.tabs.executeScript(null, {
         file: "js/content_script.js"
     }, contentRes => {
-        let pageData = contentRes ? contentRes[0] : {};
-        if(!pageData || !pageData.url) {
-            document.querySelector('[data-role="loading"]').style.display = 'none';
-            document.querySelector('[data-role="failed"]').style.display = 'block';
+        chrome.storage.sync.get({
+            "blackList": ""
+        }, storage => {
+            let pageData = contentRes ? contentRes[0] : {};
+            if(!pageData
+                || !pageData.url
+                || storage.blackList.replace(/(\r\z\s)/g, '').split('\n').indexOf(pageData.url) != -1) {
+                document.querySelector('[data-role="loading"]').style.display = 'none';
+                document.querySelector('[data-role="failed"]').style.display = 'block';
 
-            return false;
-        }
-
-        fetch(REQUEST_URL, {
-            method: "POST",
-            headers: {"Content-Type": "application/x-www-form-urlencoded"},
-            body: `type=read&action=store&page=${encodeURIComponent(JSON.stringify(pageData))}`
-        }).then(res => {
-            return res.json();
-        }).then(data => {
-            document.querySelector('[data-role="loading"]').style.display = 'none';
-
-            if(data.success) {
-                document.querySelector('[data-role="success"]').style.display = 'block';
-            } else {
-                let failedEleme = document.querySelector('[data-role="failed"]');
-                failedEleme.innerHTML = data.message;
-                failedEleme.style.display = 'block';
+                return false;
             }
-        }).catch(err => {
-            document.querySelector('[data-role="loading"]').style.display = 'none';
-            document.querySelector('[data-role="failed"]').style.display = 'block';
+
+            fetch(REQUEST_URL, {
+                method: "POST",
+                headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                body: `type=read&action=store&page=${encodeURIComponent(JSON.stringify(pageData))}`
+            }).then(res => {
+                return res.json();
+            }).then(data => {
+                document.querySelector('[data-role="loading"]').style.display = 'none';
+
+                if(data.success) {
+                    document.querySelector('[data-role="success"]').style.display = 'block';
+                } else {
+                    let failedEleme = document.querySelector('[data-role="failed"]');
+                    failedEleme.innerHTML = data.message;
+                    failedEleme.style.display = 'block';
+                }
+            }).catch(err => {
+                document.querySelector('[data-role="loading"]').style.display = 'none';
+                document.querySelector('[data-role="failed"]').style.display = 'block';
+            });
         });
     });
 });
