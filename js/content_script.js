@@ -20,6 +20,7 @@
     if(!/^(https|http)/g.test(url)) return false;
 
     return {
+        "host": window.location.host,
         "favicon": favicon,
         "url": url,
         "title": titleElem ? titleElem.innerHTML : '',

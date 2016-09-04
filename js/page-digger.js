@@ -22,12 +22,13 @@ chrome.tabs && chrome.tabs.query({
             let pageData = contentRes ? contentRes[0] : {};
             if(!pageData
                 || !pageData.url
-                || storage.blackList.replace(/(\r\z\s)/g, '').split('\n').indexOf(pageData.url) != -1) {
+                || storage.blackList.replace(/(\r\z\s)/g, '').split('\n').indexOf(pageData.host) != -1) {
                 document.querySelector('[data-role="loading"]').style.display = 'none';
                 document.querySelector('[data-role="failed"]').style.display = 'block';
 
                 return false;
             }
+            delete pageData.host;
 
             fetch(REQUEST_URL, {
                 method: "POST",
