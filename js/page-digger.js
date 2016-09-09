@@ -20,11 +20,18 @@ chrome.tabs && chrome.tabs.query({
             "blackList": ""
         }, storage => {
             let pageData = contentRes ? contentRes[0] : {};
+            let loadingNode = document.querySelector('[data-role="loading"]');
+            let warningNode = document.querySelector('[data-role="warning"]');
+            let failedNode = document.querySelector('[data-role="failed"]');
+            let successNode = document.querySelector('[data-role="success"]')
+            let removeAtricleNode = document.querySelector('[data-role="remove-article"]');
+
             if(!pageData
                 || !pageData.url
                 || storage.blackList.replace(/(\r\z\s)/g, '').split('\n').indexOf(pageData.host) != -1) {
-                document.querySelector('[data-role="loading"]').style.display = 'none';
-                document.querySelector('[data-role="failed"]').style.display = 'block';
+                loadingNode.style.display = 'none';
+                warningNode.style.display = 'none';
+                failedNode.style.display = 'block';
 
                 return false;
             }
@@ -37,18 +44,25 @@ chrome.tabs && chrome.tabs.query({
             }).then(res => {
                 return res.json();
             }).then(data => {
-                document.querySelector('[data-role="loading"]').style.display = 'none';
+                loadingNode.style.display = 'none';
 
                 if(data.success) {
-                    document.querySelector('[data-role="success"]').style.display = 'block';
+                    successNode.style.display = 'block';
                 } else {
-                    let failedEleme = document.querySelector('[data-role="failed"]');
-                    failedEleme.innerHTML = data.message;
-                    failedEleme.style.display = 'block';
+                    let errorElem = failedNode;
+                    let messageElem = failedNode;
+                    if(data.type != 'duplicate') {
+                        messageElem = warningNode.querySelector('span');
+                        errorElem = warningNode;
+                        removeAtricleNode.setAttribute('data-objectid', data.id);
+                    }
+
+                    messageElem.innerHTML = data.message;
+                    errorElem.style.display = 'block';
                 }
             }).catch(err => {
-                document.querySelector('[data-role="loading"]').style.display = 'none';
-                document.querySelector('[data-role="failed"]').style.display = 'block';
+                loadingNode.style.display = 'none';
+                failedNode.style.display = 'block';
             });
         });
     });
