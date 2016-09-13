@@ -16,16 +16,16 @@ chrome.tabs && chrome.tabs.query({
     chrome.tabs.executeScript(null, {
         file: "js/content_script.js"
     }, contentRes => {
+        let pageData = contentRes ? contentRes[0] : {};
+        let loadingNode = document.querySelector('[data-role="loading"]');
+        let warningNode = document.querySelector('[data-role="warning"]');
+        let failedNode = document.querySelector('[data-role="failed"]');
+        let successNode = document.querySelector('[data-role="success"]')
+        let removeAtricleNode = document.querySelector('[data-role="remove-article"]');
+
         chrome.storage.sync.get({
             "blackList": ""
         }, storage => {
-            let pageData = contentRes ? contentRes[0] : {};
-            let loadingNode = document.querySelector('[data-role="loading"]');
-            let warningNode = document.querySelector('[data-role="warning"]');
-            let failedNode = document.querySelector('[data-role="failed"]');
-            let successNode = document.querySelector('[data-role="success"]')
-            let removeAtricleNode = document.querySelector('[data-role="remove-article"]');
-
             if(!pageData
                 || !pageData.url
                 || storage.blackList.replace(/(\r\z\s)/g, '').split('\n').indexOf(pageData.host) != -1) {
@@ -49,9 +49,9 @@ chrome.tabs && chrome.tabs.query({
                 if(data.success) {
                     successNode.style.display = 'block';
                 } else {
-                    let errorElem = failedNode;
-                    let messageElem = failedNode;
-                    if(data.type != 'duplicate') {
+                    var errorElem = failedNode;
+                    var messageElem = failedNode;
+                    if(data.type == 'duplicate') {
                         messageElem = warningNode.querySelector('span');
                         errorElem = warningNode;
                         removeAtricleNode.setAttribute('data-objectid', data.id);
@@ -65,5 +65,25 @@ chrome.tabs && chrome.tabs.query({
                 failedNode.style.display = 'block';
             });
         });
+
+        /* 干掉当前保存的数据 */
+        document.querySelector('[data-role="remove-article"]').addEventListener('click', evt => {
+            let id = evt.target.getAttribute('data-objectid') || '';
+            if(!id) return false;
+
+            fetch(REQUEST_URL, {
+                method: "POST",
+                headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                body: `type=read&action=remove&id=${id}`
+            }).then(res => {
+                return res.json();
+            }).then(data => {
+                if(data.objectId) window.close();
+                else {
+                    failedNode.innerHTML = '删除当前文章失败, 再试试.';
+                    failedNode.style.display = 'block';
+                }
+            });
+        }, false);
     });
 });
