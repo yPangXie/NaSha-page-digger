@@ -14,7 +14,9 @@
     let keywordsMeta = document.querySelector('meta[name="keywords"]');
     let titleElem = document.querySelector('title');
     let url = window.location.href || '';
-    let favicon = faviconLink ? faviconLink.getAttribute('href') : (faviconMeta ? faviconMeta.getAttribute('content') : `${url}/favicon.ico`);
+    let host = window.location.host || '';
+    let protocol = window.location.protocol || 'http:';
+    let favicon = faviconLink ? faviconLink.getAttribute('href') : (faviconMeta ? faviconMeta.getAttribute('content') : `${protocol}//${host}/favicon.ico`);
 
     /* 仅记录三种类型的页面数据. 其他的都无视. */
     if(!/^(https|http)/g.test(url)) return false;
@@ -23,8 +25,8 @@
         "host": window.location.host,
         "favicon": favicon,
         "url": url,
-        "title": titleElem ? titleElem.innerHTML : '',
-        "description": descriptionMeta ? descriptionMeta.getAttribute('content') : '',
+        "title": (titleElem ? titleElem.innerHTML : '').replace(/%/g, '%25'),
+        "description": (descriptionMeta ? descriptionMeta.getAttribute('content') : '').replace(/%/g, '%25'),
         "keywords": keywordsMeta ? keywordsMeta.getAttribute('content') : ''
     };
 })();
